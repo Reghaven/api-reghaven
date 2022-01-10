@@ -1,9 +1,9 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { Character } from '../../../../model/character.model';
+import { CharacterModel } from '../../../../model/character.model';
 
-@Resolver((of) => Character)
+@Resolver((of) => CharacterModel)
 export class CharacterResolver {
-	@Query((returns) => Character)
+	@Query((returns) => CharacterModel)
 	public character(@Args('uuid', { type: () => String }) uuid: string) {
 		return {
 			uuid: uuid,

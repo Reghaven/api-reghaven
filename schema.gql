@@ -2,10 +2,10 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Character {
+type CharacterModel {
   uuid: String!
 }
 
 type Query {
-  character(uuid: String!): Character!
+  character(uuid: String!): CharacterModel!
 }

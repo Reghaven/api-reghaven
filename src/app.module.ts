@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { CharacterModule } from './modules/character/character.module';
 
@@ -13,7 +11,5 @@ import { CharacterModule } from './modules/character/character.module';
 		}),
 		CharacterModule,
 	],
-	controllers: [AppController],
-	providers: [AppService],
 })
 export class AppModule {}
