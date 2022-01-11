@@ -2,8 +2,85 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type AttributeModel {
+  name: String
+  pointsCollected: Int!
+  uuid: String!
+}
+
+type AssetModel {
+  name: String!
+  type: AssetType!
+  uuid: String!
+}
+
+enum AssetType {
+  Normal
+  Attribute
+  Usable
+  Equippable
+}
+
+type AssetInstanceModel {
+  asset: AssetModel!
+  count: Int!
+}
+
+type EquipEffectModel {
+  attribute: AttributeModel!
+  name: String!
+  type: EquipEffectType!
+  uuid: String!
+}
+
+enum EquipEffectType {
+  Increase
+  Decrease
+}
+
+type EquippableAssetModel {
+  effects: [EquipEffectModel!]!
+  forBodyPart: BodyPart!
+  name: String!
+  type: AssetType!
+  uuid: String!
+}
+
+enum BodyPart {
+  Head
+  Body
+  Wrist
+  Necklace
+  Shoes
+}
+
+type CharacterEquipmentModel {
+  head: EquippableAssetModel!
+  body: EquippableAssetModel!
+  wrist: EquippableAssetModel!
+  necklace: EquippableAssetModel!
+  shoes: EquippableAssetModel!
+}
+
+type LocationModel {
+  characterCanLeaveAnytime: Boolean!
+  isUnlockedFromBeginning: Boolean!
+  isVisibleOnMap: Boolean!
+  name: String!
+  uuid: String!
+}
+
+type CharacterMapModel {
+  currentLocation: LocationModel!
+  unlockedLocations: [LocationModel!]!
+}
+
 type CharacterModel {
   uuid: String!
+  assetInstances: [AssetInstanceModel!]!
+  attributes: [AttributeModel!]!
+  equipment: CharacterEquipmentModel!
+  map: CharacterMapModel!
 }
 
 type Query {
