@@ -1,5 +1,5 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { CharacterModel } from '../../../../model/character.model';
+import { CharacterModel } from '../../../../model/character/character.model';
 
 @Resolver((of) => CharacterModel)
 export class CharacterResolver {
