@@ -66,11 +66,12 @@ type LocationModel {
   characterCanLeaveAnytime: Boolean!
   isUnlockedFromBeginning: Boolean!
   isVisibleOnMap: Boolean!
-  name: String!
+  name: String
   uuid: String!
 }
 
 type CharacterMapModel {
+  id: Int!
   currentLocation: LocationModel!
   unlockedLocations: [LocationModel!]!
 }

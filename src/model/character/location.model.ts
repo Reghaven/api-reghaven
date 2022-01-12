@@ -9,8 +9,8 @@ export class LocationModel implements Location {
 	isUnlockedFromBeginning: boolean;
 	@Field((type) => Boolean)
 	isVisibleOnMap: boolean;
-	@Field((type) => String)
-	name: string;
+	@Field((type) => String, { nullable: true })
+	name?: string;
 	@Field((type) => String)
 	uuid: string;
 }
