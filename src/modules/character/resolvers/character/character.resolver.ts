@@ -1,6 +1,7 @@
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { CharacterModel } from '../../../../model/character/character.model';
 import { CharacterMapModel } from '../../../../model/character/character-map.model';
+import { LocationModel } from '../../../../model/character/location.model';
 
 @Resolver((of) => CharacterModel)
 export class CharacterResolver {
@@ -24,16 +25,35 @@ export class CharacterResolver {
 
 	@ResolveField('map', (returns) => CharacterMapModel)
 	public characterMap(@Parent() characterModel: CharacterModel) {
+		const characterMapModel = new CharacterMapModel();
+		characterMapModel.id = 3;
+		return characterMapModel;
+	}
+}
+
+@Resolver((of) => CharacterMapModel)
+export class CharacterMapModelResolver {
+	@ResolveField('currentLocation', (returns) => LocationModel)
+	public currentLocation(@Parent() locationModel: CharacterMapModel) {
 		return {
-			id: 3,
-			currentLocation: {
-				name: 'TestLocation',
-				uuid: 'e51f65cc-0787-4d6c-8931-b87d52f2e100',
+			name: 'TestLocation2',
+			uuid: '7244f725-a0d2-4b99-9c06-a6ddd883edef',
+			isUnlockedFromBeginning: true,
+			characterCanLeaveAnytime: true,
+			isVisibleOnMap: true,
+		};
+	}
+
+	@ResolveField('unlockedLocations', (returns) => [LocationModel])
+	public locationMap(@Parent() locationModel: CharacterMapModel) {
+		return [
+			{
+				name: 'TestLocation2',
+				uuid: '7244f725-a0d2-4b99-9c06-a6ddd883edef',
 				isUnlockedFromBeginning: true,
 				characterCanLeaveAnytime: true,
 				isVisibleOnMap: true,
 			},
-			unlockedLocations: [],
-		};
+		];
 	}
 }
