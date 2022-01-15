@@ -1,7 +1,10 @@
-import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { CharacterModel } from '../../../../model/character/character.model';
-import { CharacterMapModel } from '../../../../model/character/character-map.model';
-import { LocationModel } from '../../../../model/character/location.model';
+import {Args, Parent, Query, ResolveField, Resolver} from '@nestjs/graphql';
+import {CharacterModel} from '../../../../model/character/character.model';
+import {CharacterMapModel} from '../../../../model/character/character-map.model';
+import {AssetType, BodyPart} from "lib-storyteller";
+import {AttributeModel} from "../../../../model/character/attribute.model";
+import {CharacterEquipmentModel} from "../../../../model/character/character-equipment.model";
+import {AssetInstanceModel} from "../../../../model/character/asset-instance.model";
 
 @Resolver((of) => CharacterModel)
 export class CharacterResolver {
@@ -9,18 +12,9 @@ export class CharacterResolver {
 	public character(
 		@Args('uuid', { type: () => String }) uuid: string,
 	): Partial<CharacterModel> {
-		return {
-			attributes: [
-				{
-					uuid: '74668beb-2426-486c-8b09-fcfa0d4cb909',
-					name: 'Strength',
-					pointsCollected: 1,
-				},
-			],
-			uuid: uuid,
-			assetInstances: [],
-			equipment: {},
-		};
+		const character = new CharacterModel();
+		character.uuid = uuid;
+		return character;
 	}
 
 	@ResolveField('map', (returns) => CharacterMapModel)
@@ -29,31 +23,49 @@ export class CharacterResolver {
 		characterMapModel.id = 3;
 		return characterMapModel;
 	}
-}
-
-@Resolver((of) => CharacterMapModel)
-export class CharacterMapModelResolver {
-	@ResolveField('currentLocation', (returns) => LocationModel)
-	public currentLocation(@Parent() locationModel: CharacterMapModel) {
-		return {
-			name: 'TestLocation2',
-			uuid: '7244f725-a0d2-4b99-9c06-a6ddd883edef',
-			isUnlockedFromBeginning: true,
-			characterCanLeaveAnytime: true,
-			isVisibleOnMap: true,
-		};
-	}
-
-	@ResolveField('unlockedLocations', (returns) => [LocationModel])
-	public locationMap(@Parent() locationModel: CharacterMapModel) {
+	
+	@ResolveField('attributes', returns => [AttributeModel])
+	public attributes(
+		@Parent() characterModel: CharacterModel
+	): AttributeModel[] {
 		return [
 			{
-				name: 'TestLocation2',
-				uuid: '7244f725-a0d2-4b99-9c06-a6ddd883edef',
-				isUnlockedFromBeginning: true,
-				characterCanLeaveAnytime: true,
-				isVisibleOnMap: true,
+				uuid: 'e1efd2f1-48cc-474d-a36e-9289126aa2eb',
+				name: 'Strength',
+				pointsCollected: 1,
 			},
+			{
+				uuid: '2741c9f2-33de-4461-8d7d-e2ac90d76249',
+				name: 'Intelligence',
+				pointsCollected: 1,
+			},
+		];
+	}
+	
+	@ResolveField('equipment', returns => CharacterEquipmentModel)
+	equipment(): Partial<CharacterEquipmentModel> {
+		const characterEquipment = new CharacterEquipmentModel();
+		characterEquipment.head = {
+			type: AssetType.Equippable,
+			uuid: '1dbf83c3-2ac6-40f3-83df-b4d2acbcc073',
+			name: 'A silly Helmet',
+			forBodyPart: BodyPart.Head,
+			effects: [],
+		};
+		return characterEquipment;
+	}
+	
+	@ResolveField('assetInstances', returns => [AssetInstanceModel])
+	assetInstances(): Partial<AssetInstanceModel>[] {
+		return [
+			{
+				count: 100,
+				asset: {
+					uuid: '6064cd9e-7c32-464c-985e-a4e286fe8a2f',
+					name: 'Shinies',
+					type: AssetType.Normal,
+				}
+			}
 		];
 	}
 }
