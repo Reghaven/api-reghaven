@@ -1,7 +1,7 @@
 import {Args, Parent, Query, ResolveField, Resolver} from '@nestjs/graphql';
 import {CharacterModel} from '../../../../model/character/character.model';
 import {CharacterMapModel} from '../../../../model/character/character-map.model';
-import {AssetType, BodyPart} from "lib-storyteller";
+import {AssetType, BodyPart, EquipEffectType} from "lib-storyteller";
 import {AttributeModel} from "../../../../model/character/attribute.model";
 import {CharacterEquipmentModel} from "../../../../model/character/character-equipment.model";
 import {AssetInstanceModel} from "../../../../model/character/asset-instance.model";
@@ -50,7 +50,18 @@ export class CharacterResolver {
 			uuid: '1dbf83c3-2ac6-40f3-83df-b4d2acbcc073',
 			name: 'A silly Helmet',
 			forBodyPart: BodyPart.Head,
-			effects: [],
+			effects: [
+				{
+					uuid: '55a75196-5699-4ef0-ab0e-e92203c060af',
+					name: 'Protection',
+					type: EquipEffectType.Increase,
+					attribute: {
+						uuid: 'e1efd2f1-48cc-474d-a36e-9289126aa2eb',
+						name: 'Strength',
+						pointsCollected: 1,
+					},
+				}
+			],
 		};
 		return characterEquipment;
 	}
