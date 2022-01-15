@@ -55,11 +55,11 @@ enum BodyPart {
 }
 
 type CharacterEquipmentModel {
-  head: EquippableAssetModel!
-  body: EquippableAssetModel!
-  wrist: EquippableAssetModel!
-  necklace: EquippableAssetModel!
-  shoes: EquippableAssetModel!
+  head: EquippableAssetModel
+  body: EquippableAssetModel
+  wrist: EquippableAssetModel
+  necklace: EquippableAssetModel
+  shoes: EquippableAssetModel
 }
 
 type LocationModel {

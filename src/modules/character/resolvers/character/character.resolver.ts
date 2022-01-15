@@ -1,11 +1,10 @@
-import {Args, Parent, Query, ResolveField, Resolver} from '@nestjs/graphql';
-import {CharacterModel} from '../../../../model/character/character.model';
-import {CharacterMapModel} from '../../../../model/character/character-map.model';
-import {AssetType, BodyPart, EquipEffectType} from "lib-storyteller";
-import {AttributeModel} from "../../../../model/character/attribute.model";
-import {CharacterEquipmentModel} from "../../../../model/character/character-equipment.model";
-import {AssetInstanceModel} from "../../../../model/character/asset-instance.model";
-import {EquipEffectModel} from "../../../../model/character/equip-effect.model";
+import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { CharacterModel } from '../../../../model/character/character.model';
+import { CharacterMapModel } from '../../../../model/character/character-map.model';
+import { AssetType } from 'lib-storyteller';
+import { AttributeModel } from '../../../../model/character/attribute.model';
+import { CharacterEquipmentModel } from '../../../../model/character/character-equipment.model';
+import { AssetInstanceModel } from '../../../../model/character/asset-instance.model';
 
 @Resolver((of) => CharacterModel)
 export class CharacterResolver {
@@ -24,10 +23,10 @@ export class CharacterResolver {
 		characterMapModel.id = 3;
 		return characterMapModel;
 	}
-	
-	@ResolveField('attributes', returns => [AttributeModel])
+
+	@ResolveField('attributes', (returns) => [AttributeModel])
 	public attributes(
-		@Parent() characterModel: CharacterModel
+		@Parent() characterModel: CharacterModel,
 	): AttributeModel[] {
 		return [
 			{
@@ -42,30 +41,13 @@ export class CharacterResolver {
 			},
 		];
 	}
-	
-	@ResolveField('equipment', returns => CharacterEquipmentModel)
+
+	@ResolveField('equipment', (returns) => CharacterEquipmentModel)
 	public equipment(): Partial<CharacterEquipmentModel> {
-		const characterEquipment = new CharacterEquipmentModel();
-		const protectionEffect = new EquipEffectModel();
-		protectionEffect.uuid = '7b0ca8ff-0276-4029-b735-dc3045414817';
-		protectionEffect.name = 'Protection';
-		protectionEffect.type = EquipEffectType.Increase;
-		protectionEffect.attribute = {
-			uuid: 'e1efd2f1-48cc-474d-a36e-9289126aa2eb',
-			name: 'Strength',
-			pointsCollected: 1,
-		};
-		characterEquipment.head = {
-			type: AssetType.Equippable,
-			uuid: '1dbf83c3-2ac6-40f3-83df-b4d2acbcc073',
-			name: 'A silly Helmet',
-			forBodyPart: BodyPart.Head,
-			effects: [protectionEffect],
-		};
-		return characterEquipment;
+		return new CharacterEquipmentModel();
 	}
-	
-	@ResolveField('assetInstances', returns => [AssetInstanceModel])
+
+	@ResolveField('assetInstances', (returns) => [AssetInstanceModel])
 	assetInstances(): Partial<AssetInstanceModel>[] {
 		return [
 			{
@@ -74,8 +56,8 @@ export class CharacterResolver {
 					uuid: '6064cd9e-7c32-464c-985e-a4e286fe8a2f',
 					name: 'Shinies',
 					type: AssetType.Normal,
-				}
-			}
+				},
+			},
 		];
 	}
 }
