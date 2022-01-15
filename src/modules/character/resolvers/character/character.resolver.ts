@@ -5,6 +5,7 @@ import {AssetType, BodyPart, EquipEffectType} from "lib-storyteller";
 import {AttributeModel} from "../../../../model/character/attribute.model";
 import {CharacterEquipmentModel} from "../../../../model/character/character-equipment.model";
 import {AssetInstanceModel} from "../../../../model/character/asset-instance.model";
+import {EquipEffectModel} from "../../../../model/character/equip-effect.model";
 
 @Resolver((of) => CharacterModel)
 export class CharacterResolver {
@@ -43,25 +44,23 @@ export class CharacterResolver {
 	}
 	
 	@ResolveField('equipment', returns => CharacterEquipmentModel)
-	equipment(): Partial<CharacterEquipmentModel> {
+	public equipment(): Partial<CharacterEquipmentModel> {
 		const characterEquipment = new CharacterEquipmentModel();
+		const protectionEffect = new EquipEffectModel();
+		protectionEffect.uuid = '7b0ca8ff-0276-4029-b735-dc3045414817';
+		protectionEffect.name = 'Protection';
+		protectionEffect.type = EquipEffectType.Increase;
+		protectionEffect.attribute = {
+			uuid: 'e1efd2f1-48cc-474d-a36e-9289126aa2eb',
+			name: 'Strength',
+			pointsCollected: 1,
+		};
 		characterEquipment.head = {
 			type: AssetType.Equippable,
 			uuid: '1dbf83c3-2ac6-40f3-83df-b4d2acbcc073',
 			name: 'A silly Helmet',
 			forBodyPart: BodyPart.Head,
-			effects: [
-				{
-					uuid: '55a75196-5699-4ef0-ab0e-e92203c060af',
-					name: 'Protection',
-					type: EquipEffectType.Increase,
-					attribute: {
-						uuid: 'e1efd2f1-48cc-474d-a36e-9289126aa2eb',
-						name: 'Strength',
-						pointsCollected: 1,
-					},
-				}
-			],
+			effects: [protectionEffect],
 		};
 		return characterEquipment;
 	}
