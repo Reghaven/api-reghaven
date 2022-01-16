@@ -84,6 +84,57 @@ type CharacterModel {
   map: CharacterMapModel!
 }
 
+type PlaceModel {
+  locations: [LocationModel!]!
+  name: String!
+  uuid: String!
+}
+
+type AttributeConditionModel {
+  attributeLevelFor100Percent: Float!
+  attributeToActivate: AttributeModel!
+}
+
+type AssetConditionModel {
+  characterHasAssets: [AssetInstanceModel!]!
+  characterHasNotAssets: [AssetInstanceModel!]!
+  characterIsAtLocation: LocationModel!
+  name: String!
+  uuid: String!
+}
+
+type SubmitDecisionResultModel {
+  attributeToIncrease: AttributeModel!
+  characterGainsAssetInstances: [AssetInstanceModel!]!
+  characterGoesToLocation: LocationModel!
+  characterLoosesAssetInstances: [AssetInstanceModel!]!
+  characterWins: Boolean!
+  providesAttributePoints: Float!
+  text: String!
+}
+
+type DecisionModel {
+  attributeCondition: AttributeConditionModel!
+  conditionsToShow: AssetConditionModel!
+  conditionsToUse: AssetConditionModel!
+  name: String!
+  onFail: SubmitDecisionResultModel!
+  onWin: SubmitDecisionResultModel!
+  text: String!
+  uuid: String!
+}
+
+type StoryModel {
+  characterHasAssets: AssetInstanceModel!
+  characterHasNotAssets: AssetInstanceModel!
+  characterIsAtPlace: PlaceModel!
+  decisions: [DecisionModel!]!
+  name: String!
+  text: String!
+  uuid: String!
+}
+
 type Query {
   character(uuid: String!): CharacterModel!
+  story(uuid: String!): [StoryModel!]!
 }
