@@ -11,6 +11,37 @@ datasource db {
 }
 
 model character {
-  id   Int    @id @default(autoincrement())
-  uuid String @db.Uuid
+  id                       Int                        @id @default(autoincrement())
+  uuid                     String                     @db.Uuid
+  character_asset_instance character_asset_instance[]
+}
+
+model asset {
+  id             Int              @id @default(autoincrement())
+  uuid           String           @db.Uuid
+  name           String
+  type           asset_type
+  asset_instance asset_instance[]
+}
+
+model asset_instance {
+  id                       Int                        @id @default(autoincrement())
+  asset_id                 Int
+  asset                    asset                      @relation(fields: [asset_id], references: [id])
+  character_asset_instance character_asset_instance[]
+}
+
+model character_asset_instance {
+  character_id     Int            @unique
+  character        character      @relation(fields: [character_id], references: [id])
+  asset_instance   asset_instance @relation(fields: [asset_instanceId], references: [id])
+  asset_instanceId Int
+
+  @@index([character_id])
+}
+
+enum asset_type {
+  Normal
+  Usable
+  Equippble
 }
