@@ -14,7 +14,6 @@ export class EquippableAssetResolver {
 		protectionEffect.attribute = {
 			uuid: '1b8a2fad-ad63-4594-b1a3-266e111bf045',
 			name: 'Strength',
-			pointsCollected: 1,
 		};
 		return [protectionEffect];
 	}

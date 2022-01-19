@@ -5,6 +5,8 @@ import { AssetType } from 'lib-storyteller';
 import { AttributeModel } from '../../../../model/character/attribute.model';
 import { CharacterEquipmentModel } from '../../../../model/character/character-equipment.model';
 import { AssetInstanceModel } from '../../../../model/character/asset-instance.model';
+import { CharacterAttribute } from 'lib-storyteller/dist/model/attribute/character-attribute.entity';
+import { CharacterAttributeModel } from '../../../../model/character/character-attribute.model';
 
 @Resolver((of) => CharacterModel)
 export class CharacterResolver {
@@ -27,16 +29,20 @@ export class CharacterResolver {
 	@ResolveField('attributes', (returns) => [AttributeModel])
 	public attributes(
 		@Parent() characterModel: CharacterModel,
-	): AttributeModel[] {
+	): CharacterAttributeModel[] {
 		return [
 			{
-				uuid: 'e1efd2f1-48cc-474d-a36e-9289126aa2eb',
-				name: 'Strength',
+				attribute: {
+					uuid: 'e1efd2f1-48cc-474d-a36e-9289126aa2eb',
+					name: 'Strength',
+				},
 				pointsCollected: 1,
 			},
 			{
-				uuid: '2741c9f2-33de-4461-8d7d-e2ac90d76249',
-				name: 'Intelligence',
+				attribute: {
+					uuid: '2741c9f2-33de-4461-8d7d-e2ac90d76249',
+					name: 'Intelligence',
+				},
 				pointsCollected: 1,
 			},
 		];

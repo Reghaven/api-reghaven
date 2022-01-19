@@ -18,7 +18,6 @@ export class CharacterEquipmentResolver {
 		protectionEffect.attribute = {
 			uuid: 'e1efd2f1-48cc-474d-a36e-9289126aa2eb',
 			name: 'Strength',
-			pointsCollected: 1,
 		};
 		return {
 			type: AssetType.Equippable,
@@ -39,7 +38,6 @@ export class CharacterEquipmentResolver {
 		protectionEffect.attribute = {
 			uuid: 'e1efd2f1-48cc-474d-a36e-9289126aa2eb',
 			name: 'Strength',
-			pointsCollected: 1,
 		};
 		return {
 			type: AssetType.Equippable,
@@ -60,7 +58,6 @@ export class CharacterEquipmentResolver {
 		protectionEffect.attribute = {
 			uuid: 'e1efd2f1-48cc-474d-a36e-9289126aa2eb',
 			name: 'Strength',
-			pointsCollected: 1,
 		};
 		return {
 			type: AssetType.Equippable,
@@ -81,7 +78,6 @@ export class CharacterEquipmentResolver {
 		protectionEffect.attribute = {
 			uuid: 'e1efd2f1-48cc-474d-a36e-9289126aa2eb',
 			name: 'Strength',
-			pointsCollected: 1,
 		};
 		return {
 			type: AssetType.Equippable,
@@ -102,7 +98,6 @@ export class CharacterEquipmentResolver {
 		protectionEffect.attribute = {
 			uuid: 'e1efd2f1-48cc-474d-a36e-9289126aa2eb',
 			name: 'Strength',
-			pointsCollected: 1,
 		};
 		return {
 			type: AssetType.Equippable,

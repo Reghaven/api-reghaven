@@ -13,7 +13,6 @@ export class AttributeConditionResolver {
 		attributeCondition.attributeToActivate = {
 			name: 'DemoAsset',
 			uuid: 'da94ab98-542c-45e2-931d-31f1f40842de',
-			pointsCollected: 10,
 		};
 		return attributeCondition;
 	}

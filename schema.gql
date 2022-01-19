@@ -2,12 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type AttributeModel {
-  name: String
-  pointsCollected: Int!
-  uuid: String!
-}
-
 type AssetModel {
   name: String!
   type: AssetType!
@@ -24,6 +18,11 @@ enum AssetType {
 type AssetInstanceModel {
   asset: AssetModel!
   count: Int!
+}
+
+type AttributeModel {
+  name: String
+  uuid: String!
 }
 
 type EquipEffectModel {
@@ -76,10 +75,15 @@ type CharacterMapModel {
   unlockedLocations: [LocationModel!]!
 }
 
+type CharacterAttributeModel {
+  attribute: AttributeModel!
+  pointsCollected: Float!
+}
+
 type CharacterModel {
   uuid: String!
   assetInstances: [AssetInstanceModel!]!
-  attributes: [AttributeModel!]!
+  attributes: [CharacterAttributeModel!]!
   equipment: CharacterEquipmentModel!
   map: CharacterMapModel!
 }

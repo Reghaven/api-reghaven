@@ -1,15 +1,15 @@
 ﻿import { Field, ObjectType } from '@nestjs/graphql';
 import {
 	AssetInstance,
-	Attribute,
 	Character,
 	CharacterEquipment,
 	CharacterMap,
 } from 'lib-storyteller';
-import { AttributeModel } from './attribute.model';
 import { AssetInstanceModel } from './asset-instance.model';
 import { CharacterEquipmentModel } from './character-equipment.model';
 import { CharacterMapModel } from './character-map.model';
+import { CharacterAttributeModel } from './character-attribute.model';
+import { CharacterAttribute } from 'lib-storyteller/dist/model/attribute/character-attribute.entity';
 
 @ObjectType()
 export class CharacterModel implements Character {
@@ -17,8 +17,8 @@ export class CharacterModel implements Character {
 	uuid: string;
 	@Field((type) => [AssetInstanceModel])
 	assetInstances: AssetInstance[];
-	@Field((type) => [AttributeModel])
-	attributes: Attribute[];
+	@Field((type) => [CharacterAttributeModel])
+	attributes: CharacterAttribute[];
 	@Field((type) => CharacterEquipmentModel)
 	equipment: CharacterEquipment;
 	@Field((type) => CharacterMapModel)
