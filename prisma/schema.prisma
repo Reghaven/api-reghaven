@@ -12,13 +12,15 @@ datasource db {
 
 model character {
   id                       Int                        @id @default(autoincrement())
-  uuid                     String                     @db.Uuid
+  uuid                     String                     @unique @db.Uuid
   character_asset_instance character_asset_instance[]
+  attributes               attribute[]
+  character_equipment      character_equipment[]
 }
 
 model asset {
   id             Int              @id @default(autoincrement())
-  uuid           String           @db.Uuid
+  uuid           String           @unique @db.Uuid
   name           String
   type           asset_type
   asset_instance asset_instance[]
@@ -40,8 +42,71 @@ model character_asset_instance {
   @@index([character_id])
 }
 
+model attribute {
+  id               Int            @id @default(autoincrement())
+  uuid             String         @unique @db.Uuid
+  name             String?        @unique
+  points_collected Int
+  character_id     Int
+  character        character      @relation(fields: [character_id], references: [id])
+  equip_effect     equip_effect[]
+}
+
+model character_equipment {
+  character_id      Int              @unique
+  character         character        @relation(fields: [character_id], references: [id])
+  head_asset_id     Int
+  head              equippable_asset @relation(name: "head", fields: [head_asset_id], references: [id])
+  body_asset_id     Int
+  body              equippable_asset @relation(name: "body", fields: [body_asset_id], references: [id])
+  wrist_asset_id    Int
+  wrist             equippable_asset @relation(name: "wrist", fields: [wrist_asset_id], references: [id])
+  necklace_asset_id Int
+  necklace          equippable_asset @relation(name: "necklace", fields: [necklace_asset_id], references: [id])
+  shoes_asset_id    Int
+  shoes             equippable_asset @relation(name: "shoes", fields: [shoes_asset_id], references: [id])
+}
+
+model equippable_asset {
+  id                 Int                   @id @default(autoincrement())
+  uuid               String                @unique @db.Uuid
+  equip_effect_id    Int
+  equip_effect       equip_effect          @relation(fields: [equip_effect_id], references: [id])
+  type               asset_type
+  for_body_part      body_part
+  name               String?
+  head_equipment     character_equipment[] @relation("head")
+  body_equipment     character_equipment[] @relation("body")
+  wrist_equipment    character_equipment[] @relation("wrist")
+  necklace_equipment character_equipment[] @relation("necklace")
+  shoes_equipment    character_equipment[] @relation("shoes")
+}
+
+model equip_effect {
+  id               Int                @id @default(autoincrement())
+  uuid             String             @unique @db.Uuid
+  name             String
+  attribute_id     Int
+  attribute        attribute          @relation(fields: [attribute_id], references: [id])
+  type             equip_effect_type
+  equippable_asset equippable_asset[]
+}
+
 enum asset_type {
   Normal
   Usable
   Equippble
+}
+
+enum body_part {
+  Head
+  Body
+  Wrist
+  Necklace
+  Shoes
+}
+
+enum equip_effect_type {
+  Increase
+  Decrease
 }
