@@ -14,4 +14,6 @@ export class EquipEffectModel implements EquipEffect {
 	type: EquipEffectType;
 	@Field((type) => String)
 	uuid: string;
+	@Field((type) => Number)
+	amount: number;
 }
