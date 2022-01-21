@@ -16,14 +16,16 @@ model character {
   character_asset_instance character_asset_instance[]
   attributes               attribute[]
   character_equipment      character_equipment[]
+  character_map            character_map[]
 }
 
 model asset {
-  id             Int              @id @default(autoincrement())
-  uuid           String           @unique @db.Uuid
-  name           String
-  type           asset_type
-  asset_instance asset_instance[]
+  id               Int                @id @default(autoincrement())
+  uuid             String             @unique @db.Uuid
+  name             String
+  type             asset_type
+  asset_instance   asset_instance[]
+  equippable_asset equippable_asset[]
 }
 
 model asset_instance {
@@ -34,10 +36,10 @@ model asset_instance {
 }
 
 model character_asset_instance {
-  character_id     Int            @unique
-  character        character      @relation(fields: [character_id], references: [id])
-  asset_instance   asset_instance @relation(fields: [asset_instanceId], references: [id])
-  asset_instanceId Int
+  character_id      Int            @unique
+  character         character      @relation(fields: [character_id], references: [id])
+  asset_instance    asset_instance @relation(fields: [asset_instance_id], references: [id])
+  asset_instance_id Int
 
   @@index([character_id])
 }
@@ -75,6 +77,8 @@ model equippable_asset {
   type               asset_type
   for_body_part      body_part
   name               String?
+  asset_id           Int
+  asset              asset                 @relation(fields: [asset_id], references: [id])
   head_equipment     character_equipment[] @relation("head")
   body_equipment     character_equipment[] @relation("body")
   wrist_equipment    character_equipment[] @relation("wrist")
@@ -90,6 +94,27 @@ model equip_effect {
   attribute        attribute          @relation(fields: [attribute_id], references: [id])
   type             equip_effect_type
   equippable_asset equippable_asset[]
+  amount           Int
+}
+
+model character_map {
+  id                  Int        @id @default(autoincrement())
+  character_id        Int        @unique
+  character           character  @relation(fields: [character_id], references: [id])
+  current_location_id Int
+  current_location    location   @relation(name: "character_map_current_location", fields: [current_location_id], references: [id])
+  locations           location[]
+
+  @@index([character_id])
+}
+
+model location {
+  id                          Int             @id @default(autoincrement())
+  is_visible_on_map           Boolean
+  is_unlocked_from_beginning  Boolean
+  character_can_leave_anytime Boolean
+  character_maps              character_map[]
+  character_map               character_map[] @relation("character_map_current_location")
 }
 
 enum asset_type {
