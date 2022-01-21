@@ -33,11 +33,10 @@ model asset_instance {
   asset_id                 Int
   asset                    asset                      @relation(fields: [asset_id], references: [id])
   character_asset_instance character_asset_instance[]
+  count                    Int
 
   has_assets_stories     story[] @relation(name: "character_has_assets")
   has_not_assets_stories story[] @relation(name: "character_has_not_assets")
-  story                  story?  @relation("charatcer_has_not_assets", fields: [storyId], references: [id])
-  storyId                Int?
 }
 
 model character_asset_instance {
@@ -128,7 +127,6 @@ model story {
   text                     String
   character_has_assets     asset_instance[] @relation(name: "character_has_assets")
   character_has_not_assets asset_instance[] @relation(name: "character_has_not_assets")
-  asset_instance           asset_instance[] @relation("charatcer_has_not_assets")
 }
 
 enum asset_type {
