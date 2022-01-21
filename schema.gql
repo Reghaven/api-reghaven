@@ -130,13 +130,13 @@ type DecisionModel {
 }
 
 type StoryModel {
+  uuid: String!
+  name: String!
+  text: String!
   characterHasAssets: AssetInstanceModel!
   characterHasNotAssets: AssetInstanceModel!
   characterIsAtPlace: PlaceModel!
   decisions: [DecisionModel!]!
-  name: String!
-  text: String!
-  uuid: String!
 }
 
 type Query {

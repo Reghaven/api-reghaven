@@ -6,6 +6,12 @@ import { AssetInstanceModel } from '../character/asset-instance.model';
 
 @ObjectType()
 export class StoryModel implements Story {
+	@Field((type) => String)
+	uuid: string;
+	@Field((type) => String)
+	name: string;
+	@Field((type) => String)
+	text: string;
 	@Field((type) => AssetInstanceModel)
 	characterHasAssets: AssetInstance[];
 	@Field((type) => AssetInstanceModel)
@@ -14,10 +20,4 @@ export class StoryModel implements Story {
 	characterIsAtPlace: Place;
 	@Field((type) => [DecisionModel])
 	decisions: Decision[];
-	@Field((type) => String)
-	name: string;
-	@Field((type) => String)
-	text: string;
-	@Field((type) => String)
-	uuid: string;
 }
