@@ -119,6 +119,15 @@ model location {
   character_can_leave_anytime Boolean
   character_maps              character_map[]
   character_map               character_map[] @relation("character_map_current_location")
+  place                       place?          @relation(fields: [placeId], references: [id])
+  placeId                     Int?
+}
+
+model place {
+  id        Int        @id @default(autoincrement())
+  uuid      String     @db.Uuid
+  locations location[]
+  story     story[]
 }
 
 model story {
@@ -127,6 +136,8 @@ model story {
   text                     String
   character_has_assets     asset_instance[] @relation(name: "character_has_assets")
   character_has_not_assets asset_instance[] @relation(name: "character_has_not_assets")
+  character_is_at_place_id Int
+  character_is_at_place    place            @relation(fields: [character_is_at_place_id], references: [id])
 }
 
 enum asset_type {
