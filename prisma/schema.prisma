@@ -37,6 +37,11 @@ model asset_instance {
 
   has_assets_stories     story[] @relation(name: "character_has_assets")
   has_not_assets_stories story[] @relation(name: "character_has_not_assets")
+
+  asset_condition_has_id     Int?
+  asset_condition_has        asset_condition? @relation("asset_condition_character_has_assets", fields: [asset_condition_has_id], references: [id])
+  asset_condition_has_not_id Int?
+  asset_condition_has_not    asset_condition? @relation("asset_condition_character_has_not_assets", fields: [asset_condition_has_not_id], references: [id])
 }
 
 model character_asset_instance {
@@ -113,14 +118,15 @@ model character_map {
 }
 
 model location {
-  id                          Int             @id @default(autoincrement())
+  id                          Int               @id @default(autoincrement())
   is_visible_on_map           Boolean
   is_unlocked_from_beginning  Boolean
   character_can_leave_anytime Boolean
   character_maps              character_map[]
-  character_map               character_map[] @relation("character_map_current_location")
-  place                       place?          @relation(fields: [placeId], references: [id])
+  character_map               character_map[]   @relation("character_map_current_location")
+  place                       place?            @relation(fields: [placeId], references: [id])
   placeId                     Int?
+  asset_condition             asset_condition[]
 }
 
 model place {
@@ -138,6 +144,29 @@ model story {
   character_has_not_assets asset_instance[] @relation(name: "character_has_not_assets")
   character_is_at_place_id Int
   character_is_at_place    place            @relation(fields: [character_is_at_place_id], references: [id])
+  decisions                decision[]
+}
+
+model decision {
+  id                    Int             @id @default(autoincrement())
+  uuid                  String          @db.Uuid
+  story                 story?          @relation(fields: [storyId], references: [id])
+  storyId               Int?
+  text                  String
+  conditions_to_show_id Int
+  conditions_to_show    asset_condition @relation("asset_condition_to_show", fields: [conditions_to_show_id], references: [id])
+  conditions_to_use_id  Int
+  conditions_to_use     asset_condition @relation("asset_condition_to_use", fields: [conditions_to_use_id], references: [id])
+}
+
+model asset_condition {
+  id                       Int              @id @default(autoincrement())
+  decision_show            decision[]       @relation("asset_condition_to_show")
+  decision_use             decision[]       @relation("asset_condition_to_use")
+  character_has_assets     asset_instance[] @relation("asset_condition_character_has_assets")
+  character_has_not_assets asset_instance[] @relation("asset_condition_character_has_not_assets")
+  character_is_at_location location         @relation(fields: [locationId], references: [id])
+  locationId               Int
 }
 
 enum asset_type {
