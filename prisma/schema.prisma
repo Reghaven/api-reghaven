@@ -42,6 +42,11 @@ model asset_instance {
   asset_condition_has        asset_condition? @relation("asset_condition_character_has_assets", fields: [asset_condition_has_id], references: [id])
   asset_condition_has_not_id Int?
   asset_condition_has_not    asset_condition? @relation("asset_condition_character_has_not_assets", fields: [asset_condition_has_not_id], references: [id])
+
+  submit_decision_result_gain_id   Int?
+  submit_decision_result_gain      submit_decision_result? @relation("gains", fields: [submit_decision_result_gain_id], references: [id])
+  submit_decision_result_looses_id Int?
+  submit_decision_result_looses    submit_decision_result? @relation("looses", fields: [submit_decision_result_looses_id], references: [id])
 }
 
 model character_asset_instance {
@@ -54,13 +59,14 @@ model character_asset_instance {
 }
 
 model attribute {
-  id               Int            @id @default(autoincrement())
-  uuid             String         @unique @db.Uuid
-  name             String?        @unique
-  points_collected Int
-  character_id     Int
-  character        character      @relation(fields: [character_id], references: [id])
-  equip_effect     equip_effect[]
+  id                     Int                      @id @default(autoincrement())
+  uuid                   String                   @unique @db.Uuid
+  name                   String?                  @unique
+  points_collected       Int
+  character_id           Int
+  character              character                @relation(fields: [character_id], references: [id])
+  equip_effect           equip_effect[]
+  submit_decision_result submit_decision_result[]
 }
 
 model character_equipment {
@@ -118,15 +124,16 @@ model character_map {
 }
 
 model location {
-  id                          Int               @id @default(autoincrement())
+  id                          Int                      @id @default(autoincrement())
   is_visible_on_map           Boolean
   is_unlocked_from_beginning  Boolean
   character_can_leave_anytime Boolean
   character_maps              character_map[]
-  character_map               character_map[]   @relation("character_map_current_location")
-  place                       place?            @relation(fields: [placeId], references: [id])
+  character_map               character_map[]          @relation("character_map_current_location")
+  place                       place?                   @relation(fields: [placeId], references: [id])
   placeId                     Int?
   asset_condition             asset_condition[]
+  submit_decision_result      submit_decision_result[]
 }
 
 model place {
@@ -148,25 +155,50 @@ model story {
 }
 
 model decision {
-  id                    Int             @id @default(autoincrement())
-  uuid                  String          @db.Uuid
-  story                 story?          @relation(fields: [storyId], references: [id])
-  storyId               Int?
-  text                  String
-  conditions_to_show_id Int
-  conditions_to_show    asset_condition @relation("asset_condition_to_show", fields: [conditions_to_show_id], references: [id])
-  conditions_to_use_id  Int
-  conditions_to_use     asset_condition @relation("asset_condition_to_use", fields: [conditions_to_use_id], references: [id])
+  id                     Int                      @id @default(autoincrement())
+  uuid                   String                   @db.Uuid
+  story                  story?                   @relation(fields: [storyId], references: [id])
+  storyId                Int?
+  text                   String
+  conditions_to_show_id  Int
+  conditions_to_show     asset_condition          @relation("asset_condition_to_show", fields: [conditions_to_show_id], references: [id])
+  conditions_to_use_id   Int
+  conditions_to_use      asset_condition          @relation("asset_condition_to_use", fields: [conditions_to_use_id], references: [id])
+  submit_decision_result submit_decision_result[]
 }
 
 model asset_condition {
-  id                       Int              @id @default(autoincrement())
-  decision_show            decision[]       @relation("asset_condition_to_show")
-  decision_use             decision[]       @relation("asset_condition_to_use")
-  character_has_assets     asset_instance[] @relation("asset_condition_character_has_assets")
-  character_has_not_assets asset_instance[] @relation("asset_condition_character_has_not_assets")
-  character_is_at_location location         @relation(fields: [locationId], references: [id])
+  id                       Int                    @id @default(autoincrement())
+  decision_show            decision[]             @relation("asset_condition_to_show")
+  decision_use             decision[]             @relation("asset_condition_to_use")
+  character_has_assets     asset_instance[]       @relation("asset_condition_character_has_assets")
+  character_has_not_assets asset_instance[]       @relation("asset_condition_character_has_not_assets")
+  character_is_at_location location               @relation(fields: [locationId], references: [id])
   locationId               Int
+  on_win_id                Int
+  on_win                   submit_decision_result @relation("on_win_result", fields: [on_win_id], references: [id])
+  on_fail_id               Int
+  on_fail                  submit_decision_result @relation("on_fail_result", fields: [on_fail_id], references: [id])
+}
+
+model submit_decision_result {
+  id                   Int               @id @default(autoincrement())
+  asset_condition_win  asset_condition[] @relation("on_win_result")
+  asset_condition_fail asset_condition[] @relation("on_fail_result")
+  decision             decision?         @relation(fields: [decisionId], references: [id])
+  decisionId           Int?
+
+  character_gains_asset_instances  asset_instance[] @relation("gains")
+  character_looses_asset_instances asset_instance[] @relation("looses")
+
+  character_goes_to_location_id Int?
+  character_goes_to_location    location? @relation(fields: [character_goes_to_location_id], references: [id])
+
+  character_wins            Boolean
+  text                      String
+  provides_attribute_points Int
+  attribute_to_increase_id  Int?
+  attribute_to_increase     attribute? @relation(fields: [attribute_to_increase_id], references: [id])
 }
 
 enum asset_type {
