@@ -10,9 +10,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model account {
+  id            Int         @id @default(autoincrement())
+  username      String      @unique
+  email_address String      @unique
+  password      String
+  character     character[]
+}
+
 model character {
   id                       Int                        @id @default(autoincrement())
   uuid                     String                     @unique @db.Uuid
+  account_id               Int
+  account                  account                    @relation(fields: [account_id], references: [id])
   character_asset_instance character_asset_instance[]
   attributes               attribute[]
   character_equipment      character_equipment[]
