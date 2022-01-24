@@ -12,6 +12,7 @@ datasource db {
 
 model account {
   id            Int         @id @default(autoincrement())
+  uuid          String      @unique @db.Uuid
   username      String      @unique
   email_address String      @unique
   password      String
