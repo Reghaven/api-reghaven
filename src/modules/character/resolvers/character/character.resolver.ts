@@ -5,7 +5,6 @@ import { AssetType } from 'lib-storyteller';
 import { AttributeModel } from '../../../../model/character/attribute.model';
 import { CharacterEquipmentModel } from '../../../../model/character/character-equipment.model';
 import { AssetInstanceModel } from '../../../../model/character/asset-instance.model';
-import { CharacterAttribute } from 'lib-storyteller/dist/model/attribute/character-attribute.entity';
 import { CharacterAttributeModel } from '../../../../model/character/character-attribute.model';
 
 @Resolver((of) => CharacterModel)

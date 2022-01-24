@@ -139,7 +139,26 @@ type StoryModel {
   decisions: [DecisionModel!]!
 }
 
+type AccountModel {
+  id: Float!
+  uuid: String!
+  username: String!
+  email_address: String!
+  password: String!
+  character: [CharacterModel!]!
+}
+
 type Query {
   character(uuid: String!): CharacterModel!
   story(uuid: String!): [StoryModel!]!
+}
+
+type Mutation {
+  createAccount(accountData: AccountInput!): AccountModel!
+}
+
+input AccountInput {
+  username: String!
+  email: String!
+  password: String!
 }
